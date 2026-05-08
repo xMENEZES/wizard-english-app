@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { supabase } from '../lib/supabaseClient'
 import Head from 'next/head'
+import Script from 'next/script'
 
 export default function Exercicios() {
   const [sessao, setSessao] = useState(null)
@@ -25,16 +26,6 @@ export default function Exercicios() {
     return () => subscription.unsubscribe()
   }, [])
 
-  useEffect(() => {
-    if (!carregando && sessao) {
-      const s = document.createElement('script')
-      s.id = 'ex-script'
-      s.textContent = EXERCISES_JS
-      document.body.appendChild(s)
-      return () => { const el = document.getElementById('ex-script'); if(el) el.remove() }
-    }
-  }, [carregando, sessao])
-
   const sair = async () => {
     await supabase.auth.signOut()
     router.push('/')
@@ -55,6 +46,11 @@ export default function Exercicios() {
         <button onClick={sair} style={{background:'rgba(255,255,255,.18)',border:'1px solid rgba(255,255,255,.5)',color:'#fff',padding:'4px 14px',borderRadius:'20px',cursor:'pointer',fontSize:'.8rem'}}>Sair</button>
       </div>
       <div dangerouslySetInnerHTML={{__html: EXERCISES_BODY}} />
+      <Script
+        id="exercises-script"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: EXERCISES_JS }}
+      />
     </>
   )
 }
