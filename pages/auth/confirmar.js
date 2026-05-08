@@ -13,8 +13,9 @@ export default function Confirmar() {
   const router = useRouter()
 
   useEffect(() => {
-    // Aguarda supabase-js processar o token da URL e criar a sessao
-    const tentativas = [300, 800, 1500]
+    // Sessao ja foi criada pelo index.js via exchangeCodeForSession
+    // Basta buscar a sessao atual
+    const tentativas = [200, 600, 1200, 2000]
     let idx = 0
 
     const verificar = () => {
@@ -39,7 +40,13 @@ export default function Confirmar() {
     if (senha.length < 6) { setErro('A senha deve ter pelo menos 6 caracteres.'); return }
     if (senha !== confirmar) { setErro('As senhas não coincidem.'); return }
     setSalvando(true)
-    const { error } = await supabase.auth.updateUser({ password: senha })
+
+    // Define a senha e marca que o usuario ja configurou sua senha
+    const { error } = await supabase.auth.updateUser({
+      password: senha,
+      data: { password_set: true }
+    })
+
     if (error) { setErro('Erro ao salvar: ' + error.message); setSalvando(false) }
     else router.push('/exercicios')
   }

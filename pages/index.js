@@ -11,19 +11,38 @@ export default function Login() {
   const router = useRouter()
 
   useEffect(() => {
-    // Se a URL contiver type=invite, redireciona para a pagina de definir senha
-    if (typeof window !== 'undefined') {
-      const hash = window.location.hash
-      if (hash.includes('type=invite')) {
-        router.push('/auth/confirmar')
-        return
-      }
+    if (!router.isReady) return
+
+    const { code } = router.query
+
+    if (code) {
+      // Fluxo PKCE: troca o code por sessao (convite ou magic link)
+      supabase.auth.exchangeCodeForSession(code).then(({ data, error }) => {
+        if (data?.session) {
+          const user = data.session.user
+          // Se o usuario foi convidado e ainda nao definiu senha propria
+          const precisaDefinirSenha = user.invited_at && !user.user_metadata?.password_set
+          if (precisaDefinirSenha) {
+            router.push('/auth/confirmar')
+          } else {
+            router.push('/exercicios')
+          }
+        }
+      })
+      return
     }
-    // Caso contrario, verifica se ja existe sessao ativa
+
+    // Fluxo hash (legado): verificar invite
+    if (typeof window !== 'undefined' && window.location.hash.includes('type=invite')) {
+      setTimeout(() => router.push('/auth/confirmar'), 200)
+      return
+    }
+
+    // Login normal: verificar sessao existente
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) router.push('/exercicios')
     })
-  }, [])
+  }, [router.isReady, router.query])
 
   const entrar = async (e) => {
     e.preventDefault()
