@@ -169,6 +169,13 @@ exercises:[
 ]}
 };
 var curUnit=null,curIdx=0,curScore=0,answered=false,selOpt=null,badges={};
+// Restaurar badges e progresso salvos
+(function(){
+  for(var u=1;u<=7;u++){
+    var b=localStorage.getItem('wz_badge_'+u);
+    if(b){try{badges[u]=JSON.parse(b);}catch(e){}}
+  }
+})();
 var STRICT_CASE=['I','English','Portuguese','Spanish','French','German','Chinese'];
 function stripPunct(w){return w.replace(/[.?!,;:]+$/,'');}
 function answerMatch(u,a){
@@ -184,8 +191,40 @@ function answerMatch(u,a){
   return true;
 }
 function goHome(){document.getElementById('homeScreen').classList.add('active');document.getElementById('unitContainer').innerHTML='';document.getElementById('backBtn').style.display='none';refreshBadges();}
-function refreshBadges(){for(var u in badges){var el=document.getElementById('badge'+u);if(!el)continue;var s=badges[u].s,t=badges[u].t,pct=Math.round(s/t*100);el.textContent='Acertos: '+s+'/'+t+' ('+pct+'%)';el.style.color=pct===100?'#1b5e20':pct>=60?'#e65100':'#c62828';}}
-function openUnit(n){curUnit=n;curIdx=0;curScore=0;answered=false;selOpt=null;document.getElementById('homeScreen').classList.remove('active');document.getElementById('backBtn').style.display='block';renderUnit();}
+function refreshBadges(){
+  for(var u in badges){
+    var el=document.getElementById('badge'+u);if(!el)continue;
+    var s=badges[u].s,t=badges[u].t,pct=Math.round(s/t*100);
+    el.textContent='Acertos: '+s+'/'+t+' ('+pct+'%)';
+    el.style.color=pct===100?'#1b5e20':pct>=60?'#e65100':'#c62828';
+  }
+  for(var u2=1;u2<=7;u2++){
+    if(badges[u2])continue;
+    var prog=localStorage.getItem('wz_prog_'+u2);
+    if(prog){try{
+      var d=JSON.parse(prog);
+      var el2=document.getElementById('badge'+u2);
+      if(el2){
+        var total2=UNITS[u2].exercises.length;
+        el2.textContent='Em progresso: questao '+(d.curIdx+1)+' de '+total2;
+        el2.style.color='#1565c0';
+      }
+    }catch(e){}}
+  }
+}
+function openUnit(n){
+  curUnit=n;answered=false;selOpt=null;
+  var prog=localStorage.getItem('wz_prog_'+n);
+  if(prog){try{var d=JSON.parse(prog);curIdx=d.curIdx||0;curScore=d.curScore||0;}catch(e){curIdx=0;curScore=0;}}
+  else{curIdx=0;curScore=0;}
+  document.getElementById('homeScreen').classList.remove('active');
+  document.getElementById('backBtn').style.display='block';
+  renderUnit();
+}
+function resetUnit(n){
+  localStorage.removeItem('wz_prog_'+n);
+  openUnit(n);
+}
 function renderUnit(){
   var u=UNITS[curUnit],total=u.exercises.length,pct=Math.round(curIdx/total*100);
   var vh='<div class="vocab-grid">';
@@ -195,12 +234,15 @@ function renderUnit(){
     +'<div class="vocab-section"><h3>Vocabulario da Unidade</h3>'+vh+'</div>'
     +'<div class="prog-wrap"><div class="prog-bar" style="width:'+pct+'%"></div></div>'
     +'<div class="prog-label">Questao '+(curIdx+1)+' de '+total+'</div>'
+    +'<div id="resumeBar" style="display:none;background:#e3f2fd;border-radius:8px;padding:8px 14px;margin-bottom:12px;font-size:.85rem;color:#1565c0;display:flex;justify-content:space-between;align-items:center"><span>Retomando do exercicio anterior</span><button onclick="resetUnit('+curUnit+')" style="background:#1565c0;color:#fff;border:none;border-radius:6px;padding:4px 12px;cursor:pointer;font-size:.8rem">Recomecar</button></div>'
     +'<div class="score-card" id="scoreCard"><div class="score-ring" id="scoreRing"></div><div class="score-msg" id="scoreMsg"></div><div class="score-sub" id="scoreSub"></div><br>'
     +'<button class="retry-btn" onclick="openUnit('+curUnit+')">Tentar Novamente</button>'
     +'<button class="home-btn2" onclick="goHome()">Menu Principal</button></div>';
   if(curIdx<total)h+=renderEx(u.exercises[curIdx]);
   h+='</div>';
   document.getElementById('unitContainer').innerHTML=h;
+  var rb=document.getElementById('resumeBar');
+  if(rb&&curIdx>0)rb.style.display='flex';
 }
 function renderEx(ex){
   var tags={mc:['tag-mc','Multipla Escolha'],fill:['tag-fill','Preencha a Lacuna'],translate:['tag-translate','Traducao PT-EN']};
@@ -239,10 +281,20 @@ function check(){
   else{fb.className='feedback show err';fb.innerHTML='Incorreto. Resposta correta: <strong>'+ex.ans+'</strong>';}
   cb.disabled=true;nb.classList.add('show');selOpt=null;
 }
-function advance(){var total=UNITS[curUnit].exercises.length;curIdx++;answered=false;selOpt=null;if(curIdx>=total)showScore();else renderUnit();}
+function advance(){
+  var total=UNITS[curUnit].exercises.length;
+  curIdx++;answered=false;selOpt=null;
+  if(curIdx>=total){showScore();}
+  else{
+    localStorage.setItem('wz_prog_'+curUnit,JSON.stringify({curIdx:curIdx,curScore:curScore}));
+    renderUnit();
+  }
+}
 function showScore(){
   var total=UNITS[curUnit].exercises.length,pct=Math.round(curScore/total*100);
   badges[curUnit]={s:curScore,t:total};
+  localStorage.setItem('wz_badge_'+curUnit,JSON.stringify({s:curScore,t:total}));
+  localStorage.removeItem('wz_prog_'+curUnit);
   var pb=document.querySelector('.prog-bar');if(pb)pb.style.width='100%';
   var pl=document.querySelector('.prog-label');if(pl)pl.textContent='Unidade concluida!';
   var ec=document.getElementById('exCard');if(ec)ec.style.display='none';
