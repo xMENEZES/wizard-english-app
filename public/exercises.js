@@ -175,6 +175,8 @@ var curUnit=null,curIdx=0,curScore=0,answered=false,selOpt=null,badges={};
     var b=localStorage.getItem('wz_badge_'+u);
     if(b){try{badges[u]=JSON.parse(b);}catch(e){}}
   }
+  // Atualizar badges e progresso no menu assim que o script carregar
+  setTimeout(refreshBadges, 50);
 })();
 var STRICT_CASE=['I','English','Portuguese','Spanish','French','German','Chinese'];
 function stripPunct(w){return w.replace(/[.?!,;:]+$/,'');}
