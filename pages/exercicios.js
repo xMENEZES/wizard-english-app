@@ -11,6 +11,11 @@ export default function Exercicios() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) { router.push('/'); return }
+      // Se o usuario ainda nao definiu sua propria senha, redireciona para confirmar
+      if (!session.user.user_metadata?.password_set) {
+        router.push('/auth/confirmar')
+        return
+      }
       setSessao(session)
       setCarregando(false)
     })

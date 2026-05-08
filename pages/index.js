@@ -16,23 +16,15 @@ export default function Login() {
     const { code } = router.query
 
     if (code) {
-      // Codigo na URL = usuario veio de um convite por e-mail
-      // Troca o code por sessao e envia para definir senha
-      supabase.auth.exchangeCodeForSession(code).then(({ data, error }) => {
-        if (data?.session) {
-          router.push('/auth/confirmar')
-        }
+      // Convite via PKCE: troca o code por sessao e vai para exercicios
+      // A pagina de exercicios vai verificar se precisa definir senha
+      supabase.auth.exchangeCodeForSession(code).then(({ data }) => {
+        if (data?.session) router.push('/exercicios')
       })
       return
     }
 
-    // Fluxo hash legado - verificar invite
-    if (typeof window !== 'undefined' && window.location.hash.includes('type=invite')) {
-      setTimeout(() => router.push('/auth/confirmar'), 200)
-      return
-    }
-
-    // Login normal - verificar sessao existente
+    // Verifica sessao existente (hash legado tambem e capturado pelo getSession)
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) router.push('/exercicios')
     })
