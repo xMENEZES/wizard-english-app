@@ -15,16 +15,32 @@ export default function Confirmar() {
   useEffect(() => {
     if (!router.isReady) return
 
-    const code = router.query.code
+    const { token_hash, type, code } = router.query
 
-    if (code) {
-      // Fluxo PKCE — troca o código por sessão
+    if (token_hash && type) {
+      // Convite via link do template de e-mail
+      supabase.auth.verifyOtp({ token_hash, type }).then(({ data, error }) => {
+        if (data?.session) {
+          setSessao(data.session)
+          setVerificando(false)
+        } else {
+          setErro('Link inválido ou já utilizado.')
+          setVerificando(false)
+        }
+      })
+    } else if (code) {
+      // Fluxo PKCE
       supabase.auth.exchangeCodeForSession(code).then(({ data, error }) => {
-        if (data?.session) { setSessao(data.session); setVerificando(false) }
-        else { setErro('Link inválido ou expirado.'); setVerificando(false) }
+        if (data?.session) {
+          setSessao(data.session)
+          setVerificando(false)
+        } else {
+          setErro('Link inválido ou já utilizado.')
+          setVerificando(false)
+        }
       })
     } else {
-      // Fluxo hash — supabase-js processa automaticamente
+      // Fallback: verifica sessão existente no hash da URL
       setTimeout(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
           setSessao(session || null)
@@ -49,6 +65,18 @@ export default function Confirmar() {
     <div style={s.loading}>Verificando convite...</div>
   )
 
+  if (!sessao && erro) return (
+    <div style={s.page}>
+      <div style={s.card}>
+        <div style={s.logo}>⚠️</div>
+        <h2 style={s.titulo}>Link inválido</h2>
+        <p style={{color:'#666',fontSize:'.9rem',lineHeight:1.5}}>
+          {erro} Solicite um novo convite ao administrador.
+        </p>
+      </div>
+    </div>
+  )
+
   if (!sessao) return (
     <div style={s.page}>
       <div style={s.card}>
@@ -69,7 +97,7 @@ export default function Confirmar() {
         <div style={s.card}>
           <div style={s.logo}>🎓</div>
           <h1 style={s.titulo}>Wizard English W1</h1>
-          <p style={s.sub}>Defina sua senha para começar a estudar</p>
+          <p style={s.sub}>Bem-vindo! Defina sua senha para começar a estudar.</p>
           <form onSubmit={definirSenha}>
             <div style={s.campo}>
               <label style={s.label}>Nova senha</label>
