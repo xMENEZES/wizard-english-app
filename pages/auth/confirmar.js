@@ -13,42 +13,25 @@ export default function Confirmar() {
   const router = useRouter()
 
   useEffect(() => {
-    if (!router.isReady) return
+    // Aguarda supabase-js processar o token da URL e criar a sessao
+    const tentativas = [300, 800, 1500]
+    let idx = 0
 
-    const { token_hash, type, code } = router.query
-
-    if (token_hash && type) {
-      // Convite via link do template de e-mail
-      supabase.auth.verifyOtp({ token_hash, type }).then(({ data, error }) => {
-        if (data?.session) {
-          setSessao(data.session)
+    const verificar = () => {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session) {
+          setSessao(session)
           setVerificando(false)
+        } else if (idx < tentativas.length) {
+          setTimeout(verificar, tentativas[idx++])
         } else {
-          setErro('Link inválido ou já utilizado.')
           setVerificando(false)
         }
       })
-    } else if (code) {
-      // Fluxo PKCE
-      supabase.auth.exchangeCodeForSession(code).then(({ data, error }) => {
-        if (data?.session) {
-          setSessao(data.session)
-          setVerificando(false)
-        } else {
-          setErro('Link inválido ou já utilizado.')
-          setVerificando(false)
-        }
-      })
-    } else {
-      // Fallback: verifica sessão existente no hash da URL
-      setTimeout(() => {
-        supabase.auth.getSession().then(({ data: { session } }) => {
-          setSessao(session || null)
-          setVerificando(false)
-        })
-      }, 600)
     }
-  }, [router.isReady, router.query])
+
+    verificar()
+  }, [])
 
   const definirSenha = async (e) => {
     e.preventDefault()
@@ -63,18 +46,6 @@ export default function Confirmar() {
 
   if (verificando) return (
     <div style={s.loading}>Verificando convite...</div>
-  )
-
-  if (!sessao && erro) return (
-    <div style={s.page}>
-      <div style={s.card}>
-        <div style={s.logo}>⚠️</div>
-        <h2 style={s.titulo}>Link inválido</h2>
-        <p style={{color:'#666',fontSize:'.9rem',lineHeight:1.5}}>
-          {erro} Solicite um novo convite ao administrador.
-        </p>
-      </div>
-    </div>
   )
 
   if (!sessao) return (
@@ -97,7 +68,7 @@ export default function Confirmar() {
         <div style={s.card}>
           <div style={s.logo}>🎓</div>
           <h1 style={s.titulo}>Wizard English W1</h1>
-          <p style={s.sub}>Bem-vindo! Defina sua senha para começar a estudar.</p>
+          <p style={s.sub}>Bem-vindo! Defina sua senha para começar.</p>
           <form onSubmit={definirSenha}>
             <div style={s.campo}>
               <label style={s.label}>Nova senha</label>

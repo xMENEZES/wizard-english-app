@@ -11,6 +11,15 @@ export default function Login() {
   const router = useRouter()
 
   useEffect(() => {
+    // Se a URL contiver type=invite, redireciona para a pagina de definir senha
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash
+      if (hash.includes('type=invite')) {
+        router.push('/auth/confirmar')
+        return
+      }
+    }
+    // Caso contrario, verifica se ja existe sessao ativa
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) router.push('/exercicios')
     })
