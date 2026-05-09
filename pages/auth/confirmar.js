@@ -5,6 +5,8 @@ import Head from 'next/head'
 
 export default function Confirmar() {
   const [sessao, setSessao] = useState(null)
+  const [nome, setNome] = useState('')
+  const [sobrenome, setSobrenome] = useState('')
   const [senha, setSenha] = useState('')
   const [confirmar, setConfirmar] = useState('')
   const [erro, setErro] = useState('')
@@ -13,42 +15,43 @@ export default function Confirmar() {
   const router = useRouter()
 
   useEffect(() => {
-    // Sessao ja foi criada pelo index.js via exchangeCodeForSession
-    // Basta buscar a sessao atual
     const tentativas = [200, 600, 1200, 2000]
     let idx = 0
-
     const verificar = () => {
       supabase.auth.getSession().then(({ data: { session } }) => {
-        if (session) {
-          setSessao(session)
-          setVerificando(false)
-        } else if (idx < tentativas.length) {
-          setTimeout(verificar, tentativas[idx++])
-        } else {
-          setVerificando(false)
-        }
+        if (session) { setSessao(session); setVerificando(false) }
+        else if (idx < tentativas.length) { setTimeout(verificar, tentativas[idx++]) }
+        else { setVerificando(false) }
       })
     }
-
     verificar()
   }, [])
 
   const definirSenha = async (e) => {
     e.preventDefault()
     setErro('')
+    if (!nome.trim()) { setErro('Informe seu nome.'); return }
+    if (!sobrenome.trim()) { setErro('Informe seu sobrenome.'); return }
     if (senha.length < 6) { setErro('A senha deve ter pelo menos 6 caracteres.'); return }
     if (senha !== confirmar) { setErro('As senhas não coincidem.'); return }
     setSalvando(true)
 
-    // Define a senha e marca que o usuario ja configurou sua senha
-    const { error } = await supabase.auth.updateUser({
+    // 1. Atualizar senha e marcar password_set
+    const { error: pwErr } = await supabase.auth.updateUser({
       password: senha,
       data: { password_set: true }
     })
+    if (pwErr) { setErro('Erro ao salvar senha: ' + pwErr.message); setSalvando(false); return }
 
-    if (error) { setErro('Erro ao salvar: ' + error.message); setSalvando(false) }
-    else router.push('/exercicios')
+    // 2. Salvar perfil com nome e papel
+    const { error: profileErr } = await supabase.from('profiles').upsert({
+      id: sessao.user.id,
+      full_name: nome.trim() + ' ' + sobrenome.trim(),
+      role: 'student'
+    })
+    if (profileErr) console.warn('Perfil:', profileErr.message)
+
+    router.push('/exercicios')
   }
 
   if (verificando) return (
@@ -70,38 +73,38 @@ export default function Confirmar() {
 
   return (
     <>
-      <Head><title>Wizard English W1 - Definir Senha</title></Head>
+      <Head><title>Wizard English W1 - Cadastro</title></Head>
       <div style={s.page}>
         <div style={s.card}>
           <div style={s.logo}>🎓</div>
           <h1 style={s.titulo}>Wizard English W1</h1>
-          <p style={s.sub}>Bem-vindo! Defina sua senha para começar.</p>
+          <p style={s.sub}>Complete seu cadastro para começar</p>
           <form onSubmit={definirSenha}>
+            <div style={s.row}>
+              <div style={{...s.campo, flex:1}}>
+                <label style={s.label}>Nome</label>
+                <input type="text" value={nome} onChange={e=>setNome(e.target.value)}
+                  placeholder="Seu nome" required style={s.input} />
+              </div>
+              <div style={{...s.campo, flex:1, marginLeft:'10px'}}>
+                <label style={s.label}>Sobrenome</label>
+                <input type="text" value={sobrenome} onChange={e=>setSobrenome(e.target.value)}
+                  placeholder="Seu sobrenome" required style={s.input} />
+              </div>
+            </div>
             <div style={s.campo}>
-              <label style={s.label}>Nova senha</label>
-              <input
-                type="password"
-                value={senha}
-                onChange={e => setSenha(e.target.value)}
-                placeholder="Mínimo 6 caracteres"
-                required
-                style={s.input}
-              />
+              <label style={s.label}>Senha</label>
+              <input type="password" value={senha} onChange={e=>setSenha(e.target.value)}
+                placeholder="Mínimo 6 caracteres" required style={s.input} />
             </div>
             <div style={s.campo}>
               <label style={s.label}>Confirmar senha</label>
-              <input
-                type="password"
-                value={confirmar}
-                onChange={e => setConfirmar(e.target.value)}
-                placeholder="Repita a senha"
-                required
-                style={s.input}
-              />
+              <input type="password" value={confirmar} onChange={e=>setConfirmar(e.target.value)}
+                placeholder="Repita a senha" required style={s.input} />
             </div>
             {erro && <div style={s.erro}>{erro}</div>}
             <button type="submit" disabled={salvando} style={s.btn}>
-              {salvando ? 'Salvando...' : 'Definir senha e entrar'}
+              {salvando ? 'Salvando...' : 'Criar conta e entrar'}
             </button>
           </form>
         </div>
@@ -111,15 +114,16 @@ export default function Confirmar() {
 }
 
 const s = {
-  loading: { display:'flex', justifyContent:'center', alignItems:'center', height:'100vh', fontFamily:'Segoe UI,sans-serif', color:'#1b5e20', fontSize:'1rem' },
-  page: { minHeight:'100vh', background:'#eef4ee', display:'flex', alignItems:'center', justifyContent:'center', padding:'20px' },
-  card: { background:'#fff', borderRadius:'16px', padding:'40px 36px', maxWidth:'400px', width:'100%', boxShadow:'0 4px 24px rgba(0,0,0,.12)', textAlign:'center' },
-  logo: { fontSize:'3rem', marginBottom:'10px' },
-  titulo: { fontSize:'1.5rem', color:'#1b5e20', fontWeight:800, marginBottom:'4px' },
-  sub: { color:'#666', fontSize:'.9rem', marginBottom:'28px' },
-  campo: { textAlign:'left', marginBottom:'16px' },
-  label: { display:'block', fontSize:'.85rem', fontWeight:600, color:'#333', marginBottom:'6px' },
-  input: { width:'100%', border:'2px solid #e0e0e0', borderRadius:'9px', padding:'10px 14px', fontSize:'1rem', outline:'none', transition:'border .2s', fontFamily:'inherit' },
-  erro: { background:'#ffebee', color:'#c62828', borderRadius:'8px', padding:'10px 14px', fontSize:'.88rem', marginBottom:'14px', borderLeft:'4px solid #c62828' },
-  btn: { width:'100%', background:'#43a047', color:'#fff', border:'none', borderRadius:'9px', padding:'12px', fontSize:'1rem', fontWeight:700, cursor:'pointer', marginTop:'4px' },
+  loading: {display:'flex',justifyContent:'center',alignItems:'center',height:'100vh',fontFamily:'Segoe UI,sans-serif',color:'#1b5e20'},
+  page: {minHeight:'100vh',background:'#eef4ee',display:'flex',alignItems:'center',justifyContent:'center',padding:'20px'},
+  card: {background:'#fff',borderRadius:'16px',padding:'40px 36px',maxWidth:'480px',width:'100%',boxShadow:'0 4px 24px rgba(0,0,0,.12)',textAlign:'center'},
+  logo: {fontSize:'3rem',marginBottom:'10px'},
+  titulo: {fontSize:'1.5rem',color:'#1b5e20',fontWeight:800,marginBottom:'4px'},
+  sub: {color:'#666',fontSize:'.9rem',marginBottom:'28px'},
+  row: {display:'flex',marginBottom:'0'},
+  campo: {textAlign:'left',marginBottom:'16px'},
+  label: {display:'block',fontSize:'.85rem',fontWeight:600,color:'#333',marginBottom:'6px'},
+  input: {width:'100%',border:'2px solid #e0e0e0',borderRadius:'9px',padding:'10px 14px',fontSize:'1rem',outline:'none',fontFamily:'inherit',boxSizing:'border-box'},
+  erro: {background:'#ffebee',color:'#c62828',borderRadius:'8px',padding:'10px 14px',fontSize:'.88rem',marginBottom:'14px',borderLeft:'4px solid #c62828'},
+  btn: {width:'100%',background:'#43a047',color:'#fff',border:'none',borderRadius:'9px',padding:'12px',fontSize:'1rem',fontWeight:700,cursor:'pointer',marginTop:'4px'},
 }

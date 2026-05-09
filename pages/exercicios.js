@@ -12,10 +12,18 @@ export default function Exercicios() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) { router.push('/'); return }
+      if (session.user.user_metadata?.role === 'teacher') {
+        router.push('/correcao'); return
+      }
       // Se o usuario ainda nao definiu sua propria senha, redireciona para confirmar
       if (!session.user.user_metadata?.password_set) {
         router.push('/auth/confirmar')
         return
+      }
+      // Expor cliente e userId para exercises.js salvar respostas
+      if (typeof window !== 'undefined') {
+        window.__sbClient = supabase
+        window.__sbUserId = session.user.id
       }
       setSessao(session)
       setCarregando(false)

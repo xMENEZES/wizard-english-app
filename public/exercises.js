@@ -179,6 +179,19 @@ var curUnit=null,curIdx=0,curScore=0,answered=false,selOpt=null,badges={};
   setTimeout(refreshBadges, 50);
 })();
 var STRICT_CASE=['I','English','Portuguese','Spanish','French','German','Chinese'];
+function saveResult(unitId,questionIdx,question,userAnswer,correctAnswer,isCorrect){
+  var client=window.__sbClient, userId=window.__sbUserId;
+  if(!client||!userId)return;
+  client.from('exercise_results').insert({
+    user_id:userId,
+    unit_id:unitId,
+    question_idx:questionIdx,
+    question:question,
+    user_answer:userAnswer,
+    correct_answer:correctAnswer,
+    is_correct:isCorrect
+  }).then(function(){});
+}
 function stripPunct(w){return w.replace(/[.?!,;:]+$/,'');}
 function answerMatch(u,a){
   u=u.trim().replace(/\s+/g,' ').replace(/[.?!]$/,'');
@@ -272,11 +285,13 @@ function check(){
     if(selOpt===null){fb.className='feedback show err';fb.textContent='Selecione uma opcao antes de verificar.';return;}
     ok=ex.opts[selOpt]===ex.ans;
     document.querySelectorAll('.opt-btn').forEach(function(b,i){b.disabled=true;if(ex.opts[i]===ex.ans)b.classList.add('correct');else if(i===selOpt&&!ok)b.classList.add('wrong');});
+    saveResult(curUnit,curIdx,ex.q,ex.opts[selOpt],ex.ans,ok);
   } else {
     var inp=document.getElementById('fInp');
     if(!inp.value.trim()){fb.className='feedback show err';fb.textContent='Digite uma resposta antes de verificar.';return;}
     ok=answerMatch(inp.value,ex.ans);
     inp.disabled=true;inp.classList.add(ok?'correct':'wrong');
+    saveResult(curUnit,curIdx,ex.q,inp.value.trim(),ex.ans,ok);
   }
   answered=true;
   if(ok){curScore++;fb.className='feedback show ok';fb.textContent='Correto! Muito bem!';}
