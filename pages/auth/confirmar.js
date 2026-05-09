@@ -27,11 +27,14 @@ export default function Confirmar() {
     verificar()
   }, [])
 
+  // Redefinicao de senha = usuario ja tem password_set true
+  const isReset = !!sessao?.user?.user_metadata?.password_set
+
   const definirSenha = async (e) => {
     e.preventDefault()
     setErro('')
-    if (!nome.trim()) { setErro('Informe seu nome.'); return }
-    if (!sobrenome.trim()) { setErro('Informe seu sobrenome.'); return }
+    if (!isReset && !nome.trim()) { setErro('Informe seu nome.'); return }
+    if (!isReset && !sobrenome.trim()) { setErro('Informe seu sobrenome.'); return }
     if (senha.length < 6) { setErro('A senha deve ter pelo menos 6 caracteres.'); return }
     if (senha !== confirmar) { setErro('As senhas não coincidem.'); return }
     setSalvando(true)
@@ -43,13 +46,15 @@ export default function Confirmar() {
     })
     if (pwErr) { setErro('Erro ao salvar senha: ' + pwErr.message); setSalvando(false); return }
 
-    // 2. Salvar perfil com nome e papel
-    const { error: profileErr } = await supabase.from('profiles').upsert({
-      id: sessao.user.id,
-      full_name: nome.trim() + ' ' + sobrenome.trim(),
-      role: 'student'
-    })
-    if (profileErr) console.warn('Perfil:', profileErr.message)
+    // 2. Salvar perfil com nome (apenas no primeiro cadastro)
+    if (!isReset) {
+      const { error: profileErr } = await supabase.from('profiles').upsert({
+        id: sessao.user.id,
+        full_name: nome.trim() + ' ' + sobrenome.trim(),
+        role: 'student'
+      })
+      if (profileErr) console.warn('Perfil:', profileErr.message)
+    }
 
     router.push('/exercicios')
   }
@@ -73,27 +78,29 @@ export default function Confirmar() {
 
   return (
     <>
-      <Head><title>Wizard English W1 - Cadastro</title></Head>
+      <Head><title>Wizard English W1 - {isReset ? 'Redefinir Senha' : 'Cadastro'}</title></Head>
       <div style={s.page}>
         <div style={s.card}>
           <div style={s.logo}>🎓</div>
           <h1 style={s.titulo}>Wizard English W1</h1>
-          <p style={s.sub}>Complete seu cadastro para começar</p>
+          <p style={s.sub}>{isReset ? 'Digite sua nova senha' : 'Complete seu cadastro para começar'}</p>
           <form onSubmit={definirSenha}>
-            <div style={s.row}>
-              <div style={{...s.campo, flex:1}}>
-                <label style={s.label}>Nome</label>
-                <input type="text" value={nome} onChange={e=>setNome(e.target.value)}
-                  placeholder="Seu nome" required style={s.input} />
+            {!isReset && (
+              <div style={s.row}>
+                <div style={{...s.campo, flex:1}}>
+                  <label style={s.label}>Nome</label>
+                  <input type="text" value={nome} onChange={e=>setNome(e.target.value)}
+                    placeholder="Seu nome" required style={s.input} />
+                </div>
+                <div style={{...s.campo, flex:1, marginLeft:'10px'}}>
+                  <label style={s.label}>Sobrenome</label>
+                  <input type="text" value={sobrenome} onChange={e=>setSobrenome(e.target.value)}
+                    placeholder="Seu sobrenome" required style={s.input} />
+                </div>
               </div>
-              <div style={{...s.campo, flex:1, marginLeft:'10px'}}>
-                <label style={s.label}>Sobrenome</label>
-                <input type="text" value={sobrenome} onChange={e=>setSobrenome(e.target.value)}
-                  placeholder="Seu sobrenome" required style={s.input} />
-              </div>
-            </div>
+            )}
             <div style={s.campo}>
-              <label style={s.label}>Senha</label>
+              <label style={s.label}>{isReset ? 'Nova senha' : 'Senha'}</label>
               <input type="password" value={senha} onChange={e=>setSenha(e.target.value)}
                 placeholder="Mínimo 6 caracteres" required style={s.input} />
             </div>
@@ -104,7 +111,7 @@ export default function Confirmar() {
             </div>
             {erro && <div style={s.erro}>{erro}</div>}
             <button type="submit" disabled={salvando} style={s.btn}>
-              {salvando ? 'Salvando...' : 'Criar conta e entrar'}
+              {salvando ? 'Salvando...' : isReset ? 'Salvar nova senha' : 'Criar conta e entrar'}
             </button>
           </form>
         </div>

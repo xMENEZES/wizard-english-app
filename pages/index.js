@@ -16,12 +16,22 @@ export default function Login() {
     const { code } = router.query
 
     if (code) {
-      // Convite via PKCE: troca o code por sessao e vai para exercicios
-      // A pagina de exercicios vai verificar se precisa definir senha
-      supabase.auth.exchangeCodeForSession(code).then(({ data }) => {
-        if (data?.session) router.push('/exercicios')
+      // Detectar se e recuperacao de senha (PASSWORD_RECOVERY) ou convite (SIGNED_IN)
+      let sub
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+        if (event === 'PASSWORD_RECOVERY') {
+          sub?.unsubscribe()
+          router.push('/auth/confirmar')
+          return
+        }
+        if (event === 'SIGNED_IN' && session) {
+          sub?.unsubscribe()
+          router.push('/exercicios')
+        }
       })
-      return
+      sub = subscription
+      supabase.auth.exchangeCodeForSession(code)
+      return () => sub?.unsubscribe()
     }
 
     // Verifica sessao existente (hash legado tambem e capturado pelo getSession)
