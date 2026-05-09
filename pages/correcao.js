@@ -77,9 +77,9 @@ export default function Correcao() {
 
   return (
     <>
-      <Head><title>Wizard English W1 - Painel de Correção</title></Head>
+      <Head><title>Wizard English W1 - Painel de Alunos</title></Head>
       <div style={s.header}>
-        <span style={{fontWeight:700,fontSize:'1rem'}}>🎓 Painel de Correção</span>
+        <span style={{fontWeight:700,fontSize:'1rem'}}>👥 Painel de Alunos</span>
         <div style={{display:'flex',gap:'10px',alignItems:'center'}}>
           <button onClick={() => router.push('/exercicios')} style={s.btnSecundario}>Ver Exercícios</button>
           <button onClick={sair} style={s.btnSair}>Sair</button>

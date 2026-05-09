@@ -12,9 +12,6 @@ export default function Exercicios() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) { router.push('/'); return }
-      if (session.user.user_metadata?.role === 'teacher') {
-        router.push('/correcao'); return
-      }
       // Se o usuario ainda nao definiu sua propria senha, redireciona para confirmar
       if (!session.user.user_metadata?.password_set) {
         router.push('/auth/confirmar')
@@ -51,7 +48,15 @@ export default function Exercicios() {
       <style dangerouslySetInnerHTML={{__html: EXERCISES_CSS}} />
       <div style={{background:'#155216',color:'#fff',padding:'7px 18px',display:'flex',justifyContent:'space-between',alignItems:'center',fontSize:'.82rem'}}>
         <span>Logado como: <strong>{sessao.user.email}</strong></span>
-        <button onClick={sair} style={{background:'rgba(255,255,255,.18)',border:'1px solid rgba(255,255,255,.5)',color:'#fff',padding:'4px 14px',borderRadius:'20px',cursor:'pointer',fontSize:'.8rem'}}>Sair</button>
+        <div style={{display:'flex',gap:'8px',alignItems:'center'}}>
+          {sessao.user.user_metadata?.role === 'teacher' && (
+            <button onClick={() => router.push('/correcao')}
+              style={{background:'rgba(255,255,255,.25)',border:'1px solid rgba(255,255,255,.7)',color:'#fff',padding:'4px 14px',borderRadius:'20px',cursor:'pointer',fontSize:'.8rem',fontWeight:600}}>
+              👥 Painel de Alunos
+            </button>
+          )}
+          <button onClick={sair} style={{background:'rgba(255,255,255,.18)',border:'1px solid rgba(255,255,255,.5)',color:'#fff',padding:'4px 14px',borderRadius:'20px',cursor:'pointer',fontSize:'.8rem'}}>Sair</button>
+        </div>
       </div>
       <div dangerouslySetInnerHTML={{__html: EXERCISES_BODY}} />
       <Script src="/exercises.js" strategy="afterInteractive" />
