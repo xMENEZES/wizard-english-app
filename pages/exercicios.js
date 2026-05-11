@@ -22,6 +22,33 @@ export default function Exercicios() {
         window.__sbClient = supabase
         window.__sbUserId = session.user.id
       }
+
+      // Reconstruir badges do localStorage a partir do banco de dados
+      supabase
+        .from('exercise_results')
+        .select('unit_id, question_idx, is_correct, answered_at')
+        .eq('user_id', session.user.id)
+        .order('answered_at', { ascending: false })
+        .then(({ data }) => {
+          if (!data || data.length === 0) return
+          // Para cada unidade, pegar a resposta mais recente por questão
+          const unidades = {}
+          data.forEach(r => {
+            if (!unidades[r.unit_id]) unidades[r.unit_id] = {}
+            if (!unidades[r.unit_id][r.question_idx]) {
+              unidades[r.unit_id][r.question_idx] = r.is_correct
+            }
+          })
+          // Salvar badge no localStorage
+          Object.entries(unidades).forEach(([uid, questoes]) => {
+            const total = Object.keys(questoes).length
+            const acertos = Object.values(questoes).filter(Boolean).length
+            if (total > 0) {
+              localStorage.setItem('wz_badge_' + uid, JSON.stringify({ s: acertos, t: total }))
+            }
+          })
+        })
+
       setSessao(session)
       setCarregando(false)
     })
