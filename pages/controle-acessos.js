@@ -92,7 +92,7 @@ export default function ControleAcessos() {
 
   return (
     <>
-      <Head><title>Wizard English W1 - Controle de Acessos</title></Head>
+      <Head><title>English Step By Step - Controle de Acessos</title></Head>
 
       {/* Header */}
       <div style={s.header}>
@@ -116,7 +116,7 @@ export default function ControleAcessos() {
         {/* Contador de slots */}
         <div style={s.slots}>
           <div style={s.slotCard}>
-            <div style={{...s.slotNum, color:'#1b5e20'}}>{dados.total}</div>
+            <div style={{...s.slotNum, color:'#0d2157'}}>{dados.total}</div>
             <div style={s.slotLabel}>Total de Acessos</div>
           </div>
           <div style={s.slotDiv} />
@@ -126,7 +126,7 @@ export default function ControleAcessos() {
           </div>
           <div style={s.slotDiv} />
           <div style={s.slotCard}>
-            <div style={{...s.slotNum, color: dados.available === 0 ? '#c62828' : '#2e7d32'}}>{dados.available}</div>
+            <div style={{...s.slotNum, color: dados.available === 0 ? '#c62828' : '#0d47a1'}}>{dados.available}</div>
             <div style={s.slotLabel}>Vagos</div>
           </div>
         </div>
@@ -151,7 +151,7 @@ export default function ControleAcessos() {
             <div style={{overflowX:'auto'}}>
               <table style={s.table}>
                 <thead>
-                  <tr style={{background:'#1b5e20',color:'#fff'}}>
+                  <tr style={{background:'#0d2157',color:'#fff'}}>
                     <th style={s.th}>Nome</th>
                     <th style={s.th}>E-mail</th>
                     <th style={{...s.th,textAlign:'center'}}>Ações</th>
@@ -159,7 +159,7 @@ export default function ControleAcessos() {
                 </thead>
                 <tbody>
                   {dados.students.map((a, i) => (
-                    <tr key={a.id} style={{background: i%2===0?'#fff':'#f9fbe7'}}>
+                    <tr key={a.id} style={{background: i%2===0?'#fff':'#e8f4fd'}}>
                       <td style={s.td}>
                         {a.full_name
                           ? <b>{a.full_name}</b>
@@ -248,8 +248,8 @@ export default function ControleAcessos() {
 }
 
 const s = {
-  loading: {display:'flex',justifyContent:'center',alignItems:'center',height:'100vh',fontFamily:'Segoe UI,sans-serif',color:'#1b5e20'},
-  header: {background:'linear-gradient(135deg,#1b5e20,#43a047)',color:'#fff',padding:'13px 22px',display:'flex',alignItems:'center',justifyContent:'space-between',position:'sticky',top:0,zIndex:100,boxShadow:'0 2px 8px rgba(0,0,0,.2)'},
+  loading: {display:'flex',justifyContent:'center',alignItems:'center',height:'100vh',fontFamily:'Segoe UI,sans-serif',color:'#0d2157'},
+  header: {background:'linear-gradient(135deg,#0d2157,#1565c0)',color:'#fff',padding:'13px 22px',display:'flex',alignItems:'center',justifyContent:'space-between',position:'sticky',top:0,zIndex:100,boxShadow:'0 2px 8px rgba(0,0,0,.2)'},
   page: {maxWidth:'900px',margin:'0 auto',padding:'22px'},
   card: {background:'#fff',borderRadius:'14px',padding:'4px 0',boxShadow:'0 2px 8px rgba(0,0,0,.08)',overflow:'hidden'},
   slots: {background:'#fff',borderRadius:'14px',padding:'20px',marginBottom:'18px',boxShadow:'0 2px 8px rgba(0,0,0,.08)',display:'flex',alignItems:'center',justifyContent:'space-around'},
@@ -258,14 +258,14 @@ const s = {
   slotLabel: {fontSize:'.82rem',color:'#888',marginTop:'4px'},
   slotDiv: {width:'1px',background:'#e0e0e0',height:'50px'},
   actionBar: {display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'12px'},
-  secTitulo: {fontSize:'1.05rem',fontWeight:700,color:'#1b5e20'},
+  secTitulo: {fontSize:'1.05rem',fontWeight:700,color:'#0d2157'},
   table: {width:'100%',borderCollapse:'collapse',fontSize:'.88rem'},
   th: {padding:'11px 14px',textAlign:'left',fontWeight:600,fontSize:'.85rem'},
   td: {padding:'11px 14px',color:'#444',verticalAlign:'middle'},
   msg: {padding:'11px 16px',borderRadius:'9px',fontSize:'.9rem',marginBottom:'16px'},
-  msgOk: {background:'#e8f5e9',color:'#1b5e20',borderLeft:'4px solid #2e7d32'},
+  msgOk: {background:'#e3f2fd',color:'#0d2157',borderLeft:'4px solid #0d47a1'},
   msgErr: {background:'#ffebee',color:'#c62828',borderLeft:'4px solid #c62828'},
-  btnPrimario: {background:'#43a047',color:'#fff',border:'none',borderRadius:'9px',padding:'9px 20px',cursor:'pointer',fontSize:'.88rem',fontWeight:700},
+  btnPrimario: {background:'#1565c0',color:'#fff',border:'none',borderRadius:'9px',padding:'9px 20px',cursor:'pointer',fontSize:'.88rem',fontWeight:700},
   btnSec: {background:'rgba(255,255,255,.2)',border:'1px solid rgba(255,255,255,.5)',color:'#fff',padding:'5px 12px',borderRadius:'8px',cursor:'pointer',fontSize:'.8rem'},
   btnReset: {background:'#e3f2fd',color:'#1565c0',border:'1px solid #90caf9',borderRadius:'7px',padding:'6px 12px',cursor:'pointer',fontSize:'.82rem',fontWeight:600,whiteSpace:'nowrap'},
   btnRemover: {background:'#ffebee',color:'#c62828',border:'1px solid #ef9a9a',borderRadius:'7px',padding:'6px 12px',cursor:'pointer',fontSize:'.82rem',fontWeight:600,whiteSpace:'nowrap'},

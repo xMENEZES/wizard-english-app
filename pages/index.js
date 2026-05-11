@@ -45,11 +45,11 @@ export default function Login() {
 
   return (
     <>
-      <Head><title>Wizard English W1 - Login</title></Head>
+      <Head><title>English Step By Step - Login</title></Head>
       <div style={s.page}>
         <div style={s.card}>
           <div style={s.logo}>🎓</div>
-          <h1 style={s.titulo}>Wizard English W1</h1>
+          <h1 style={s.titulo}>English Step By Step</h1>
           <p style={s.sub}>Exercícios Interativos</p>
           <form onSubmit={entrar}>
             <div style={s.campo}>
@@ -87,15 +87,15 @@ export default function Login() {
 }
 
 const s = {
-  page: { minHeight:'100vh', background:'#eef4ee', display:'flex', alignItems:'center', justifyContent:'center', padding:'20px' },
+  page: { minHeight:'100vh', background:'#f0f4f8', display:'flex', alignItems:'center', justifyContent:'center', padding:'20px' },
   card: { background:'#fff', borderRadius:'16px', padding:'40px 36px', maxWidth:'400px', width:'100%', boxShadow:'0 4px 24px rgba(0,0,0,.12)', textAlign:'center' },
   logo: { fontSize:'3rem', marginBottom:'10px' },
-  titulo: { fontSize:'1.5rem', color:'#1b5e20', fontWeight:800, marginBottom:'4px' },
+  titulo: { fontSize:'1.5rem', color:'#0d2157', fontWeight:800, marginBottom:'4px' },
   sub: { color:'#666', fontSize:'.9rem', marginBottom:'28px' },
   campo: { textAlign:'left', marginBottom:'16px' },
   label: { display:'block', fontSize:'.85rem', fontWeight:600, color:'#333', marginBottom:'6px' },
   input: { width:'100%', border:'2px solid #e0e0e0', borderRadius:'9px', padding:'10px 14px', fontSize:'1rem', outline:'none', transition:'border .2s', fontFamily:'inherit' },
   erro: { background:'#ffebee', color:'#c62828', borderRadius:'8px', padding:'10px 14px', fontSize:'.88rem', marginBottom:'14px', borderLeft:'4px solid #c62828' },
-  btn: { width:'100%', background:'#43a047', color:'#fff', border:'none', borderRadius:'9px', padding:'12px', fontSize:'1rem', fontWeight:700, cursor:'pointer', marginTop:'4px' },
+  btn: { width:'100%', background:'#1565c0', color:'#fff', border:'none', borderRadius:'9px', padding:'12px', fontSize:'1rem', fontWeight:700, cursor:'pointer', marginTop:'4px' },
   rodape: { marginTop:'22px', fontSize:'.78rem', color:'#aaa' },
 }

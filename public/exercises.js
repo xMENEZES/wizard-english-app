@@ -211,7 +211,7 @@ function refreshBadges(){
     var el=document.getElementById('badge'+u);if(!el)continue;
     var s=badges[u].s,t=badges[u].t,pct=Math.round(s/t*100);
     el.textContent='Acertos: '+s+'/'+t+' ('+pct+'%)';
-    el.style.color=pct===100?'#1b5e20':pct>=60?'#e65100':'#c62828';
+    el.style.color=pct===100?'#0d2157':pct>=60?'#e65100':'#c62828';
   }
   for(var u2=1;u2<=7;u2++){
     if(badges[u2])continue;
@@ -316,8 +316,8 @@ function showScore(){
   var pl=document.querySelector('.prog-label');if(pl)pl.textContent='Unidade concluida!';
   var ec=document.getElementById('exCard');if(ec)ec.style.display='none';
   var color,msg;
-  if(pct===100){color='linear-gradient(135deg,#1b5e20,#66bb6a)';msg='Perfeito! Voce dominou esta unidade!';}
-  else if(pct>=80){color='linear-gradient(135deg,#2e7d32,#aed581)';msg='Muito bom! Continue assim!';}
+  if(pct===100){color='linear-gradient(135deg,#0d2157,#42a5f5)';msg='Perfeito! Voce dominou esta unidade!';}
+  else if(pct>=80){color='linear-gradient(135deg,#0d47a1,#90caf9)';msg='Muito bom! Continue assim!';}
   else if(pct>=60){color='linear-gradient(135deg,#e65100,#ffb74d)';msg='Bom trabalho! Continue praticando!';}
   else{color='linear-gradient(135deg,#b71c1c,#ef9a9a)';msg='Continue praticando! Voce vai melhorar!';}
   document.getElementById('scoreRing').style.background=color;

@@ -79,7 +79,7 @@ export default function Correcao() {
 
   return (
     <>
-      <Head><title>Wizard English W1 - Painel de Alunos</title></Head>
+      <Head><title>English Step By Step - Painel de Alunos</title></Head>
       <div style={s.header}>
         <span style={{fontWeight:700,fontSize:'1rem'}}>👥 Painel de Alunos</span>
         <div style={{display:'flex',gap:'10px',alignItems:'center'}}>
@@ -122,7 +122,7 @@ export default function Correcao() {
                     {resultados.length > 0 && (() => {
                       const g = statGeral()
                       return <p style={{color:'#555',fontSize:'.88rem'}}>
-                        Total geral: <b style={{color:g.pct>=60?'#1b5e20':'#c62828'}}>{g.acertos}/{g.total} ({g.pct}%)</b>
+                        Total geral: <b style={{color:g.pct>=60?'#0d2157':'#c62828'}}>{g.acertos}/{g.total} ({g.pct}%)</b>
                       </p>
                     })()}
                   </div>
@@ -145,8 +145,8 @@ export default function Correcao() {
                             <span>U{uid}</span>
                             {rs.length > 0 && (
                               <span style={{...s.tabBadge,
-                                background: totalAcertos(rs)/rs.length>=0.6?'#e8f5e9':'#ffebee',
-                                color: totalAcertos(rs)/rs.length>=0.6?'#1b5e20':'#c62828'}}>
+                                background: totalAcertos(rs)/rs.length>=0.6?'#e3f2fd':'#ffebee',
+                                color: totalAcertos(rs)/rs.length>=0.6?'#0d2157':'#c62828'}}>
                                 {totalAcertos(rs)}/{rs.length}
                               </span>
                             )}
@@ -167,13 +167,13 @@ export default function Correcao() {
                         <div style={{overflowX:'auto'}}>
                           <div style={s.statBar}>
                             <span>Unidade {unitSel}: {UNIDADES[unitSel-1]}</span>
-                            <span style={{fontWeight:700,color:totalAcertos(rs)/rs.length>=0.6?'#1b5e20':'#c62828'}}>
+                            <span style={{fontWeight:700,color:totalAcertos(rs)/rs.length>=0.6?'#0d2157':'#c62828'}}>
                               {totalAcertos(rs)}/{rs.length} corretas ({Math.round(totalAcertos(rs)/rs.length*100)}%)
                             </span>
                           </div>
                           <table style={s.table}>
                             <thead>
-                              <tr style={{background:'#1b5e20',color:'#fff'}}>
+                              <tr style={{background:'#0d2157',color:'#fff'}}>
                                 <th style={s.th}>#</th>
                                 <th style={s.th}>Pergunta</th>
                                 <th style={s.th}>Resposta do Aluno</th>
@@ -183,10 +183,10 @@ export default function Correcao() {
                             </thead>
                             <tbody>
                               {rs.sort((a,b)=>a.question_idx-b.question_idx).map((r,i) => (
-                                <tr key={r.id} style={{background:i%2===0?'#fff':'#f9fbe7'}}>
+                                <tr key={r.id} style={{background:i%2===0?'#fff':'#e8f4fd'}}>
                                   <td style={s.td}>{r.question_idx+1}</td>
                                   <td style={{...s.td,maxWidth:'220px',wordBreak:'break-word'}}>{r.question}</td>
-                                  <td style={{...s.td,color:r.is_correct?'#1b5e20':'#c62828',fontWeight:600}}>
+                                  <td style={{...s.td,color:r.is_correct?'#0d2157':'#c62828',fontWeight:600}}>
                                     {r.user_answer}
                                   </td>
                                   <td style={s.td}>{r.correct_answer}</td>
@@ -212,24 +212,23 @@ export default function Correcao() {
 }
 
 const s = {
-  loading: {display:'flex',justifyContent:'center',alignItems:'center',height:'100vh',fontFamily:'Segoe UI,sans-serif',color:'#1b5e20'},
-  header: {background:'linear-gradient(135deg,#1b5e20,#43a047)',color:'#fff',padding:'13px 22px',display:'flex',alignItems:'center',justifyContent:'space-between',position:'sticky',top:0,zIndex:100,boxShadow:'0 2px 8px rgba(0,0,0,.2)'},
+  loading: {display:'flex',justifyContent:'center',alignItems:'center',height:'100vh',fontFamily:'Segoe UI,sans-serif',color:'#0d2157'},
+  header: {background:'linear-gradient(135deg,#0d2157,#1565c0)',color:'#fff',padding:'13px 22px',display:'flex',alignItems:'center',justifyContent:'space-between',position:'sticky',top:0,zIndex:100,boxShadow:'0 2px 8px rgba(0,0,0,.2)'},
   page: {maxWidth:'900px',margin:'0 auto',padding:'22px'},
   card: {background:'#fff',borderRadius:'14px',padding:'22px',marginBottom:'20px',boxShadow:'0 2px 8px rgba(0,0,0,.08)'},
-  secTitulo: {fontSize:'1.1rem',fontWeight:700,color:'#1b5e20',marginBottom:'14px'},
+  secTitulo: {fontSize:'1.1rem',fontWeight:700,color:'#0d2157',marginBottom:'14px'},
   alunosGrid: {display:'flex',flexWrap:'wrap',gap:'10px'},
   alunoBtn: {display:'flex',alignItems:'center',gap:'8px',padding:'10px 18px',border:'2px solid #e0e0e0',borderRadius:'10px',cursor:'pointer',background:'#fff',fontSize:'.92rem',color:'#333',transition:'.2s'},
-  alunoBtnAtivo: {borderColor:'#43a047',background:'#e8f5e9',color:'#1b5e20'},
+  alunoBtnAtivo: {borderColor:'#1565c0',background:'#e3f2fd',color:'#0d2157'},
   alunoIco: {fontSize:'1.1rem'},
   alunoHeader: {display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'16px'},
   tabs: {display:'flex',gap:'6px',marginBottom:'16px',flexWrap:'wrap'},
   tab: {padding:'7px 14px',border:'2px solid #e0e0e0',borderRadius:'8px',cursor:'pointer',background:'#fff',fontSize:'.85rem',display:'flex',alignItems:'center',gap:'6px',transition:'.2s'},
-  tabAtiva: {borderColor:'#43a047',background:'#e8f5e9',fontWeight:700,color:'#1b5e20'},
+  tabAtiva: {borderColor:'#1565c0',background:'#e3f2fd',fontWeight:700,color:'#0d2157'},
   tabBadge: {padding:'2px 7px',borderRadius:'20px',fontSize:'.75rem',fontWeight:700},
   statBar: {display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 12px',background:'#f5f5f5',borderRadius:'8px',marginBottom:'10px',fontSize:'.88rem',color:'#555'},
   table: {width:'100%',borderCollapse:'collapse',fontSize:'.88rem'},
   th: {padding:'10px 12px',textAlign:'left',fontWeight:600,fontSize:'.85rem'},
   td: {padding:'9px 12px',color:'#444',verticalAlign:'top'},
   btnSecundario: {background:'rgba(255,255,255,.2)',border:'1px solid rgba(255,255,255,.6)',color:'#fff',padding:'6px 14px',borderRadius:'8px',cursor:'pointer',fontSize:'.82rem'},
-  btnSair: {background:'rgba(255,255,255,.15)',border:'1px solid rgba(255,255,255,.4)',color:'#fff',padding:'6px 14px',borderRadius:'8px',cursor:'pointer',fontSize:'.82rem'},
-}
+  btnSair: {background:'rgba(255,255,255,.15)',border:'1px solid rgb
