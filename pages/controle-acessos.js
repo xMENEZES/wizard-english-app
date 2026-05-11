@@ -76,7 +76,7 @@ export default function ControleAcessos() {
 
   const redefinirSenha = async (email, nome) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'https://wizard-english-app.vercel.app/auth/redefinir'
+      redirectTo: 'https://english-step-by-step.vercel.app/auth/redefinir'
     })
     if (error) {
       setMsgGlobal({ tipo: 'err', texto: 'Erro ao enviar: ' + error.message })

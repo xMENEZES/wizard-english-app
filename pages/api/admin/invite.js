@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   if (students.length >= SLOT_LIMIT) return res.status(400).json({ error: `Limite de ${SLOT_LIMIT} acessos atingido.` })
 
   const { error } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
-    redirectTo: 'https://wizard-english-app.vercel.app/auth/confirmar'
+    redirectTo: 'https://english-step-by-step.vercel.app/auth/confirmar'
   })
   if (error) return res.status(400).json({ error: error.message })
   res.status(200).json({ ok: true })
