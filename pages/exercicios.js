@@ -31,6 +31,18 @@ export default function Exercicios() {
     return () => subscription.unsubscribe()
   }, [])
 
+  // Sempre que a pagina renderizar, restaurar badges e progresso do localStorage
+  useEffect(() => {
+    if (!carregando && sessao) {
+      const t = setTimeout(() => {
+        if (typeof window !== 'undefined' && typeof window.refreshBadges === 'function') {
+          window.refreshBadges()
+        }
+      }, 400)
+      return () => clearTimeout(t)
+    }
+  }, [carregando, sessao])
+
   const sair = async () => {
     await supabase.auth.signOut()
     router.push('/')
