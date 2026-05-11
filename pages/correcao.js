@@ -49,7 +49,9 @@ export default function Correcao() {
       .order('unit_id')
       .order('question_idx')
       .order('answered_at', { ascending: false })
-    if (!error) {
+    if (error) {
+      console.error('[WE] Erro ao buscar resultados:', error.message, error.code, error.details)
+    } else {
       // Manter apenas a resposta mais recente por questão
       const seen = {}
       const dedup = []
