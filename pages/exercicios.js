@@ -194,6 +194,29 @@ const EXERCISES_BODY = `
     <div class="unit-card" onclick="openUnit(5)"><div class="unit-num">5</div><div class="unit-title">I want / I go</div><div class="unit-desc">Desejos, destinos e perguntas</div><div class="unit-badge" id="badge5">Nao iniciado</div></div>
     <div class="unit-card" onclick="openUnit(6)"><div class="unit-num">6</div><div class="unit-title">I have / I understand</div><div class="unit-desc">Posse, obrigacao e where</div><div class="unit-badge" id="badge6">Nao iniciado</div></div>
     <div class="unit-card" onclick="openUnit(7)"><div class="unit-num">7</div><div class="unit-title">I need / I prefer</div><div class="unit-desc">Necessidade, preferencia e comidas</div><div class="unit-badge" id="badge7">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(8)"><div class="unit-num">8</div><div class="unit-title">I buy / I sell</div><div class="unit-desc">Comprar, vender e roupas</div><div class="unit-badge" id="badge8">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(9)"><div class="unit-num">9</div><div class="unit-title">I help / I know</div><div class="unit-desc">Ajudar, saber e familia</div><div class="unit-badge" id="badge9">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(10)"><div class="unit-num">10</div><div class="unit-title">I read / I write</div><div class="unit-desc">Ler, escrever e comunicacao</div><div class="unit-badge" id="badge10">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(11)"><div class="unit-num">11</div><div class="unit-title">I open / I close</div><div class="unit-desc">Abrir, fechar e comodos</div><div class="unit-badge" id="badge11">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(12)"><div class="unit-num">12</div><div class="unit-title">I live / I start</div><div class="unit-desc">Morar, comecar e frutas</div><div class="unit-badge" id="badge12">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(13)"><div class="unit-num">13</div><div class="unit-title">I come / I stay</div><div class="unit-desc">Vir, ficar e paises</div><div class="unit-badge" id="badge13">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(14)"><div class="unit-num">14</div><div class="unit-title">I cook / I visit</div><div class="unit-desc">Cozinhar, visitar e cidade</div><div class="unit-badge" id="badge14">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(15)"><div class="unit-num">15</div><div class="unit-title">I do / I make</div><div class="unit-desc">Fazer e escola</div><div class="unit-badge" id="badge15">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(16)"><div class="unit-num">16</div><div class="unit-title">I finish / I try</div><div class="unit-desc">Terminar, tentar e horas</div><div class="unit-badge" id="badge16">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(17)"><div class="unit-num">17</div><div class="unit-title">He / She (presente)</div><div class="unit-desc">Terceira pessoa singular</div><div class="unit-badge" id="badge17">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(18)"><div class="unit-num">18</div><div class="unit-title">He / She (mais verbos)</div><div class="unit-desc">Mais verbos he/she</div><div class="unit-badge" id="badge18">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(19)"><div class="unit-num">19</div><div class="unit-title">We / They</div><div class="unit-desc">Plural no presente</div><div class="unit-badge" id="badge19">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(20)"><div class="unit-num">20</div><div class="unit-title">Passado regular</div><div class="unit-desc">Trabalhei, estudei, viajei</div><div class="unit-badge" id="badge20">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(21)"><div class="unit-num">21</div><div class="unit-title">Passado irregular I</div><div class="unit-desc">Went, took, knew, drove</div><div class="unit-badge" id="badge21">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(22)"><div class="unit-num">22</div><div class="unit-title">Passado irregular II</div><div class="unit-desc">Read, wrote, said, did</div><div class="unit-badge" id="badge22">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(23)"><div class="unit-num">23</div><div class="unit-title">Can (poder)</div><div class="unit-desc">Habilidades e permissao</div><div class="unit-badge" id="badge23">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(24)"><div class="unit-num">24</div><div class="unit-title">Would (condicional)</div><div class="unit-desc">Gostaria e preferiria</div><div class="unit-badge" id="badge24">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(25)"><div class="unit-num">25</div><div class="unit-title">Passado III</div><div class="unit-desc">Had, spoke, paid, made</div><div class="unit-badge" id="badge25">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(26)"><div class="unit-num">26</div><div class="unit-title">Passado IV</div><div class="unit-desc">Lived, washed, arrived</div><div class="unit-badge" id="badge26">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(27)"><div class="unit-num">27</div><div class="unit-title">Passado V</div><div class="unit-desc">Preferred, cooked, sold</div><div class="unit-badge" id="badge27">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(28)"><div class="unit-num">28</div><div class="unit-title">Revisao de tempos</div><div class="unit-desc">Presente, passado e can</div><div class="unit-badge" id="badge28">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(29)"><div class="unit-num">29</div><div class="unit-title">Perguntas com did</div><div class="unit-desc">Did you go? What did you?</div><div class="unit-badge" id="badge29">Nao iniciado</div></div>
+    <div class="unit-card" onclick="openUnit(30)"><div class="unit-num">30</div><div class="unit-title">Revisao geral W2</div><div class="unit-desc">Revisao completa do nivel</div><div class="unit-badge" id="badge30">Nao iniciado</div></div>
   </div>
 </div>
 <div id="unitContainer"></div>
@@ -443,21 +466,4 @@ function check(){
 }
 function advance(){var total=UNITS[curUnit].exercises.length;curIdx++;answered=false;selOpt=null;if(curIdx>=total)showScore();else renderUnit();}
 function showScore(){
-  var total=UNITS[curUnit].exercises.length,pct=Math.round(curScore/total*100);
-  badges[curUnit]={s:curScore,t:total};
-  var pb=document.querySelector('.prog-bar');if(pb)pb.style.width='100%';
-  var pl=document.querySelector('.prog-label');if(pl)pl.textContent='Unidade concluida!';
-  var ec=document.getElementById('exCard');if(ec)ec.style.display='none';
-  var color,msg;
-  if(pct===100){color='linear-gradient(135deg,#0d2157,#42a5f5)';msg='Perfeito! Voce dominou esta unidade!';}
-  else if(pct>=80){color='linear-gradient(135deg,#0d47a1,#90caf9)';msg='Muito bom! Continue assim!';}
-  else if(pct>=60){color='linear-gradient(135deg,#e65100,#ffb74d)';msg='Bom trabalho! Continue praticando!';}
-  else{color='linear-gradient(135deg,#b71c1c,#ef9a9a)';msg='Continue praticando! Voce vai melhorar!';}
-  document.getElementById('scoreRing').style.background=color;
-  document.getElementById('scoreRing').textContent=pct+'%';
-  document.getElementById('scoreMsg').textContent=msg;
-  document.getElementById('scoreSub').textContent='Voce acertou '+curScore+' de '+total+' questoes.';
-  document.getElementById('scoreCard').classList.add('show');
-  refreshBadges();
-}
-`
+  var total=UNITS[curUnit].exercises.length,pct=Math.round
