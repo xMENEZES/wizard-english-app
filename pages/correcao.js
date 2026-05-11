@@ -231,4 +231,5 @@ const s = {
   th: {padding:'10px 12px',textAlign:'left',fontWeight:600,fontSize:'.85rem'},
   td: {padding:'9px 12px',color:'#444',verticalAlign:'top'},
   btnSecundario: {background:'rgba(255,255,255,.2)',border:'1px solid rgba(255,255,255,.6)',color:'#fff',padding:'6px 14px',borderRadius:'8px',cursor:'pointer',fontSize:'.82rem'},
-  btnSair: {background:'rgba(255,255,255,.15)',border:'1px solid rgb
+  btnSair: {background:'rgba(255,255,255,.15)',border:'1px solid rgba(255,255,255,.4)',color:'#fff',padding:'6px 14px',borderRadius:'8px',cursor:'pointer',fontSize:'.82rem'},
+}
