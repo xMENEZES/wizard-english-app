@@ -39,12 +39,18 @@ export default function Exercicios() {
               unidades[r.unit_id][r.question_idx] = r.is_correct
             }
           })
-          // Salvar badge no localStorage
+          // Salvar badge ou progresso no localStorage com base na conclusao
           Object.entries(unidades).forEach(([uid, questoes]) => {
             const total = Object.keys(questoes).length
             const acertos = Object.values(questoes).filter(Boolean).length
-            if (total > 0) {
+            if (total >= 20) {
+              // Unidade concluida: salvar como badge
               localStorage.setItem('wz_badge_' + uid, JSON.stringify({ s: acertos, t: total }))
+              localStorage.removeItem('wz_prog_' + uid)
+            } else if (total > 0) {
+              // Unidade em andamento: salvar como progresso
+              localStorage.setItem('wz_prog_' + uid, JSON.stringify({ curIdx: total, curScore: acertos }))
+              localStorage.removeItem('wz_badge_' + uid)
             }
           })
         })
