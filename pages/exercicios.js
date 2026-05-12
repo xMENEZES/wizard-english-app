@@ -466,4 +466,22 @@ function check(){
 }
 function advance(){var total=UNITS[curUnit].exercises.length;curIdx++;answered=false;selOpt=null;if(curIdx>=total)showScore();else renderUnit();}
 function showScore(){
-  var total=UNITS[curUnit].exercises.length,pct=Math.round
+  var total=UNITS[curUnit].exercises.length,pct=Math.round(curScore/total*100);
+  badges[curUnit]={s:curScore,t:total};
+  localStorage.setItem('wz_badge_'+curUnit,JSON.stringify({s:curScore,t:total}));
+  localStorage.removeItem('wz_prog_'+curUnit);
+  var pb=document.querySelector('.prog-bar');if(pb)pb.style.width='100%';
+  var pl=document.querySelector('.prog-label');if(pl)pl.textContent='Unidade concluida!';
+  var ec=document.getElementById('exCard');if(ec)ec.style.display='none';
+  var color,msg;
+  if(pct===100){color='linear-gradient(135deg,#0d2157,#1565c0)';msg='Perfeito! Voce dominou esta unidade!';}
+  else if(pct>=80){color='linear-gradient(135deg,#0d47a1,#42a5f5)';msg='Muito bom! Continue assim!';}
+  else if(pct>=60){color='linear-gradient(135deg,#e65100,#ffb74d)';msg='Bom trabalho! Continue praticando!';}
+  else{color='linear-gradient(135deg,#b71c1c,#ef9a9a)';msg='Continue praticando! Voce vai melhorar!';}
+  document.getElementById('scoreRing').style.background=color;
+  document.getElementById('scoreRing').textContent=pct+'%';
+  document.getElementById('scoreMsg').textContent=msg;
+  document.getElementById('scoreSub').textContent='Voce acertou '+curScore+' de '+total+' questoes.';
+  document.getElementById('scoreCard').classList.add('show');
+  refreshBadges();
+}
