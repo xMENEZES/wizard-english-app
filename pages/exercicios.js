@@ -91,7 +91,7 @@ export default function Exercicios() {
     <>
       <Head><title>English Step By Step - Exercicios</title></Head>
       <style dangerouslySetInnerHTML={{__html: EXERCISES_CSS}} />
-      <div style={{background:'#0a1845',color:'#fff',padding:'7px 18px',display:'flex',justifyContent:'space-between',alignItems:'center',fontSize:'.82rem'}}>
+      <div style={{background:'#0a1845',color:'#fff',padding:'7px 12px',display:'flex',justifyContent:'space-between',alignItems:'center',fontSize:'.75rem',flexWrap:'wrap',gap:'4px'}}>
         <span>Logado como: <strong>{sessao.user.email}</strong></span>
         <div style={{display:'flex',gap:'8px',alignItems:'center'}}>
           {sessao.user.user_metadata?.role === 'teacher' && (<>
@@ -115,7 +115,7 @@ export default function Exercicios() {
 
 const EXERCISES_CSS = `
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f0f4f8;min-height:100vh}
+  body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f0f4f8;min-height:100vh;overflow-x:hidden}
   .app-header{background:linear-gradient(135deg,#0d2157,#1565c0);color:#fff;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 10px rgba(0,0,0,.25);position:sticky;top:0;z-index:100}
   .app-header h1{font-size:1.25rem;letter-spacing:.5px}
   .back-btn{background:rgba(255,255,255,.2);border:2px solid #fff;color:#fff;padding:7px 18px;border-radius:20px;cursor:pointer;font-size:.85rem;font-weight:600;transition:.2s;display:none}
@@ -179,7 +179,7 @@ const EXERCISES_CSS = `
   .vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:5px}
   .vocab-item{font-size:.82rem;color:#444;padding:3px 0}
   .vocab-item strong{color:#0d2157}
-  @media(max-width:520px){.opts-grid{grid-template-columns:1fr}.units-grid{grid-template-columns:1fr 1fr}.app-header h1{font-size:1rem}}
+  @media(max-width:520px){.opts-grid{grid-template-columns:1fr}.units-grid{grid-template-columns:1fr 1fr}.app-header h1{font-size:1rem}.screen{padding:14px}.unit-card{padding:14px 10px}}@media(max-width:360px){.units-grid{grid-template-columns:1fr}}
 `
 
 const EXERCISES_BODY = `
@@ -483,12 +483,4 @@ function showScore(){
   if(pct===100){color='linear-gradient(135deg,#0d2157,#1565c0)';msg='Perfeito! Voce dominou esta unidade!';}
   else if(pct>=80){color='linear-gradient(135deg,#0d47a1,#42a5f5)';msg='Muito bom! Continue assim!';}
   else if(pct>=60){color='linear-gradient(135deg,#e65100,#ffb74d)';msg='Bom trabalho! Continue praticando!';}
-  else{color='linear-gradient(135deg,#b71c1c,#ef9a9a)';msg='Continue praticando! Voce vai melhorar!';}
-  document.getElementById('scoreRing').style.background=color;
-  document.getElementById('scoreRing').textContent=pct+'%';
-  document.getElementById('scoreMsg').textContent=msg;
-  document.getElementById('scoreSub').textContent='Voce acertou '+curScore+' de '+total+' questoes.';
-  document.getElementById('scoreCard').classList.add('show');
-  refreshBadges();
-}
-`
+  else{color='linear-gradient(135deg,#b71c1c,#ef9a9a)';msg='

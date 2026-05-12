@@ -219,8 +219,8 @@ export default function Correcao() {
 
 const s = {
   loading: {display:'flex',justifyContent:'center',alignItems:'center',height:'100vh',fontFamily:'Segoe UI,sans-serif',color:'#0d2157'},
-  header: {background:'linear-gradient(135deg,#0d2157,#1565c0)',color:'#fff',padding:'13px 22px',display:'flex',alignItems:'center',justifyContent:'space-between',position:'sticky',top:0,zIndex:100,boxShadow:'0 2px 8px rgba(0,0,0,.2)'},
-  page: {maxWidth:'900px',margin:'0 auto',padding:'22px'},
+  header: {background:'linear-gradient(135deg,#0d2157,#1565c0)',color:'#fff',padding:'10px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',position:'sticky',top:0,zIndex:100,boxShadow:'0 2px 8px rgba(0,0,0,.2)',flexWrap:'wrap',gap:'6px'},
+  page: {maxWidth:'900px',margin:'0 auto',padding:'16px',overflowX:'hidden'},
   card: {background:'#fff',borderRadius:'14px',padding:'22px',marginBottom:'20px',boxShadow:'0 2px 8px rgba(0,0,0,.08)'},
   secTitulo: {fontSize:'1.1rem',fontWeight:700,color:'#0d2157',marginBottom:'14px'},
   alunosGrid: {display:'flex',flexWrap:'wrap',gap:'10px'},
@@ -229,13 +229,13 @@ const s = {
   alunoIco: {fontSize:'1.1rem'},
   alunoHeader: {display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'16px'},
   tabs: {display:'flex',gap:'6px',marginBottom:'16px',flexWrap:'wrap'},
-  tab: {padding:'7px 14px',border:'2px solid #e0e0e0',borderRadius:'8px',cursor:'pointer',background:'#fff',fontSize:'.85rem',display:'flex',alignItems:'center',gap:'6px',transition:'.2s'},
+  tab: {padding:'6px 10px',border:'2px solid #e0e0e0',borderRadius:'8px',cursor:'pointer',background:'#fff',fontSize:'.82rem',display:'flex',alignItems:'center',justifyContent:'center',gap:'4px',transition:'.2s',minWidth:'44px'},
   tabAtiva: {borderColor:'#1565c0',background:'#e3f2fd',fontWeight:700,color:'#0d2157'},
   tabBadge: {padding:'2px 7px',borderRadius:'20px',fontSize:'.75rem',fontWeight:700},
   statBar: {display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 12px',background:'#f5f5f5',borderRadius:'8px',marginBottom:'10px',fontSize:'.88rem',color:'#555'},
   table: {width:'100%',borderCollapse:'collapse',fontSize:'.88rem'},
   th: {padding:'10px 12px',textAlign:'left',fontWeight:600,fontSize:'.85rem'},
   td: {padding:'9px 12px',color:'#444',verticalAlign:'top'},
-  btnSecundario: {background:'rgba(255,255,255,.2)',border:'1px solid rgba(255,255,255,.6)',color:'#fff',padding:'6px 14px',borderRadius:'8px',cursor:'pointer',fontSize:'.82rem'},
-  btnSair: {background:'rgba(255,255,255,.15)',border:'1px solid rgba(255,255,255,.4)',color:'#fff',padding:'6px 14px',borderRadius:'8px',cursor:'pointer',fontSize:'.82rem'},
+  btnSecundario: {background:'rgba(255,255,255,.2)',border:'1px solid rgba(255,255,255,.6)',color:'#fff',padding:'6px 12px',borderRadius:'8px',cursor:'pointer',fontSize:'.78rem',fontWeight:600,whiteSpace:'nowrap'},
+  btnSair: {background:'rgba(255,255,255,.2)',border:'1px solid rgba(255,255,255,.6)',color:'#fff',padding:'6px 12px',borderRadius:'8px',cursor:'pointer',fontSize:'.78rem',fontWeight:600,whiteSpace:'nowrap'},
 }
