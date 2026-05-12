@@ -485,3 +485,4 @@ function showScore(){
   document.getElementById('scoreCard').classList.add('show');
   refreshBadges();
 }
+`
