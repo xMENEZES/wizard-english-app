@@ -765,7 +765,7 @@ function refreshBadges(){
     el.textContent='Acertos: '+s+'/'+t+' ('+pct+'%)';
     el.style.color=pct===100?'#0d2157':pct>=60?'#e65100':'#c62828';
   }
-  for(var u2=1;u2<=7;u2++){
+  for(var u2=1;u2<=30;u2++){
     if(badges[u2])continue;
     var prog=localStorage.getItem('wz_prog_'+u2);
     if(prog){try{
