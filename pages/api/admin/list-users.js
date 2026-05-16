@@ -1,5 +1,4 @@
 import { supabaseAdmin } from '../../../lib/supabaseAdmin'
-const SLOT_LIMIT = 30
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).end()
@@ -7,6 +6,9 @@ export default async function handler(req, res) {
   if (!token) return res.status(401).json({ error: 'Sem token' })
   const { data: { user }, error: ue } = await supabaseAdmin.auth.getUser(token)
   if (!user || user.user_metadata?.role !== 'teacher') return res.status(403).json({ error: 'Acesso negado' })
+
+  // Limite de vagas específico por professor (padrão 30)
+  const slotLimit = user.user_metadata?.slot_limit || 30
 
   const { data: authData, error } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 })
   if (error) return res.status(400).json({ error: error.message })
@@ -20,5 +22,5 @@ export default async function handler(req, res) {
     .map(u => ({ id: u.id, email: u.email, full_name: nameMap[u.id] || null, created_at: u.created_at }))
     .sort((a, b) => (a.full_name || 'zzz').localeCompare(b.full_name || 'zzz'))
 
-  res.status(200).json({ students, total: SLOT_LIMIT, used: students.length, available: SLOT_LIMIT - students.length })
+  res.status(200).json({ students, total: slotLimit, used: students.length, available: slotLimit - students.length })
 }
